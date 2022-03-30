@@ -25,13 +25,16 @@ router.get('/new', async (req, res) => {
 })
 
 router.post('/', async (req, res) => {
-  let { name } = req.body
+  let { name } = req.body.checklist
+  let checklist = new Checklist({name})
   try {
-    let checklist = await Checklist.create({ name })
+   await checklist.save()
     res.redirect('/checklists')
   } catch (error) {
     console.log(error)
-    res.status(422).json(error)
+    res.status(422).render('checklists/new', { checklist: { ...checklist, error }
+})
+    res.status(500).render('pages/error', { error: 'Erro ao criar checklist' })
   }
 })
 router.get('/:id', async (req, res) => {
@@ -39,7 +42,7 @@ router.get('/:id', async (req, res) => {
     let checklist = await Checklist.findById(req.params.id)
     res.status(200).render('checklists/show', { checklist: checklist })
   } catch (error) {
-    res.status(500).render('pages/error', { eror: 'Erro ao exibir as Listas' })
+    res.status(500).render('pages/error', { error: 'Erro ao exibir as Listas' })
   }
 })
 
