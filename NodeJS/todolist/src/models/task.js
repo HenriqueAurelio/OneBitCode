@@ -1,13 +1,12 @@
 const mongoose = require('mongoose')
 
 const taskSchema = mongoose.Schema({
-  name: { type: String, required: true },
-  done: { type: Boolean, required: true, default: false },
-  data: { type: Date, required: true },
+  name: { type: String },
+  done: { type: Boolean, default: false },
+  data: { type: Date },
   checklist: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Checklist',
-    required: true,
   },
 })
 
